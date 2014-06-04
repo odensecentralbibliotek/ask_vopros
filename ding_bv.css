@@ -1,0 +1,26 @@
+
+.ding-bv-tab {
+  background-color: #60b145;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+
+  display: block;
+  cursor: pointer;
+
+  position: fixed;
+  bottom: -10px;
+  left: 25%;
+  padding: 5px 20px 15px;
+
+  border-radius: 5px 5px 0 0;
+
+  -webkit-box-shadow: 2px -1px 10px 0 rgba(0,0,0,0.3);
+  -moz-box-shadow: 2px -1px 10px 0 rgba(0,0,0,0.3);
+  box-shadow: 2px -1px 10px 0 rgba(0,0,0,0.3);
+}
+
+.ding-bv-tab a {
+  color: white;
+}

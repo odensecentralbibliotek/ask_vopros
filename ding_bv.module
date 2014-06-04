@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Provide a static tab which triggers a popup for sending a question to
+ * Biblioteksvagten.dk.
+ */
+
+/**
+ * Implements hook_page_build().
+ */
+function ding_bv_page_build(&$page) {
+  $agency_id = 'apple';
+  // The host variable is only for debugging.
+  $base = 'http://' . variable_get('ding_bv_host', 'dev.biblioteksvagten.dk') . '/embed/';
+
+  $l_options = array(
+    'external' => TRUE,
+    'query' => array(
+      'agency_id' => $agency_id,
+    ),
+  );
+  $page['footer'][] = array(
+    '#prefix' => '<div class="ding-bv-tab">',
+    '#suffix' => '</div>',
+    '#markup' => l(t('Ask question'), $base . 'ask_question', $l_options),
+    '#attached' => array(
+      'js' => array(
+        $base . 'question_modal.js' => array('type' => 'external'),
+      ),
+      'css' => array(
+        drupal_get_path('module', 'ding_bv') . '/ding_bv.css',
+      ),
+    ),
+  );
+}
