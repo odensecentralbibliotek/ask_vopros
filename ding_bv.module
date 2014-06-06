@@ -37,6 +37,23 @@ function ding_bv_page_build(&$page) {
     return;
   }
 
+  // Check visibility settings.
+  $visibility_type = variable_get('ding_bv_visibility_type', 'not on');
+  $visibility_pages = variable_get('ding_bv_visibility_pages', '');
+  // If no pages are specified, show regardless of the type. This logic was
+  // lifted from block_block_list_alter(). Look there for comments.
+  if ($visibility_pages) {
+    $visibility_pages = drupal_strtolower($visibility_pages);
+    $path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
+    $page_match = drupal_match_path($path, $visibility_pages);
+    if ($path != $_GET['q']) {
+      $page_match = $page_match || drupal_match_path($_GET['q'], $visibility_pages);
+    }
+    if ($page_match xor ($visibility_type == 'on')) {
+      return;
+    }
+  }
+
   // JavaScript settings var.
   $settings = array(
     'agency_id' => $agency_id,

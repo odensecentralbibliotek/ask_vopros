@@ -26,5 +26,26 @@ function ding_bv_settings($form, &$form_state) {
     '#description' => t('E-mail address which Biblioteksvagten can forward inquiries best answered locally to.'),
   );
 
+  $options = array(
+    'not on' => t('All pages except those listed'),
+    'on' => t('Only the listed pages'),
+  );
+
+  $form['ding_bv_visibility_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show block on specific pages'),
+    '#options' => $options,
+    '#default_value' => variable_get('ding_bv_visibility_type', 'not on'),
+  );
+
+  $description = t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>'));
+
+  $form['ding_bv_visibility_pages'] = array(
+    '#type' => 'textarea',
+    '#title' => '<span class="element-invisible">' . t('Pages') . '</span>',
+    '#default_value' => variable_get('ding_bv_visibility_pages', ''),
+    '#description' => $description,
+  );
+
   return system_settings_form($form);
 }

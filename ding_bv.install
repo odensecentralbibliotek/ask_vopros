@@ -11,4 +11,6 @@
 function ding_bv_uninstall() {
   variable_del('ding_bv_agency_id');
   variable_del('ding_bv_agency_mail');
+  variable_del('ding_bv_visibility_type');
+  variable_del('ding_bv_visibility_pages');
 }
