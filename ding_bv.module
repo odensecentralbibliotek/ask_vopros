@@ -37,6 +37,12 @@ function ding_bv_page_build(&$page) {
     return;
   }
 
+  // JavaScript settings var.
+  $settings = array(
+    'agency_id' => $agency_id,
+  );
+  $settings_js = 'var ask_vopros = ' . json_encode($settings) . ';';
+
   // The host variable is only for debugging.
   $base = 'http://' . variable_get('ding_bv_host', 'dev.biblioteksvagten.dk') . '/embed/';
 
@@ -53,6 +59,7 @@ function ding_bv_page_build(&$page) {
     '#attached' => array(
       'js' => array(
         $base . 'question_modal.js' => array('type' => 'external'),
+        $settings_js => array('type' => 'inline'),
       ),
       'css' => array(
         drupal_get_path('module', 'ding_bv') . '/ding_bv.css',
