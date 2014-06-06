@@ -7,10 +7,36 @@
  */
 
 /**
+ * Implements hook_menu().
+ */
+function ding_bv_menu() {
+  $items['admin/config/services/ding_bv'] = array(
+    'title' => 'Ask Biblioteksvagten.dk',
+    'description' => 'Configure the tab for sending user questions to Biblioteksvagten.dk.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_bv_settings'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'ding_bv.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_page_build().
  */
 function ding_bv_page_build(&$page) {
-  $agency_id = 'apple';
+  if ($agency_id = variable_get('ting_agency', '')) {
+    $agency_id = 'DK-' . $agency_id;
+  }
+  else {
+    $agency_id = variable_get('ding_bv_agency_id', '');
+  }
+
+  if (!$agency_id) {
+    return;
+  }
+
   // The host variable is only for debugging.
   $base = 'http://' . variable_get('ding_bv_host', 'dev.biblioteksvagten.dk') . '/embed/';
 
