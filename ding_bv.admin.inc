@@ -19,5 +19,12 @@ function ding_bv_settings($form, &$form_state) {
     );
   }
 
+  $form['ding_bv_agency_mail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Local E-mail'),
+    '#default_value' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
+    '#description' => t('E-mail address which Biblioteksvagten can forward inquiries best answered locally to.'),
+  );
+
   return system_settings_form($form);
 }

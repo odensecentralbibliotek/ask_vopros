@@ -40,6 +40,7 @@ function ding_bv_page_build(&$page) {
   // JavaScript settings var.
   $settings = array(
     'agency_id' => $agency_id,
+    'agency_mail' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
   );
   $settings_js = 'var ask_vopros = ' . json_encode($settings) . ';';
 
