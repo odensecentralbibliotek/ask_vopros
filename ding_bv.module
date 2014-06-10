@@ -73,7 +73,7 @@ function ding_bv_page_build(&$page) {
   $page['footer'][] = array(
     '#prefix' => '<div class="ding-bv-tab">',
     '#suffix' => '</div>',
-    '#markup' => l(t('Ask question'), $base . 'ask_question', $l_options),
+    '#markup' => l(t('Ask question'), $base . 'ask-question', $l_options),
     '#attached' => array(
       'js' => array(
         $base . 'question_modal.js' => array('type' => 'external'),
