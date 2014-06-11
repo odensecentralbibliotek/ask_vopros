@@ -21,6 +21,10 @@
   box-shadow: 2px -1px 10px 0 rgba(0,0,0,0.3);
 }
 
-.ding-bv-tab a {
+.ding-bv-tab a:link,
+.ding-bv-tab a:hover,
+.ding-bv-tab a:visited,
+.ding-bv-tab a:active
+{
   color: white;
 }
