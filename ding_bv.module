@@ -23,9 +23,12 @@ function ding_bv_menu() {
 }
 
 /**
- * Implements hook_page_build().
+ * Preprocess variables for html.tpl.php
+ *
+ * This adds in our bottom tab. Using hook_page_build() is no good, as
+ * panels_everywhere thoroughly disables it, so we use this instead.
  */
-function ding_bv_page_build(&$page) {
+function ding_bv_preprocess_html(&$vars) {
   if ($agency_id = variable_get('ting_agency', '')) {
     $agency_id = 'DK-' . $agency_id;
   }
@@ -70,7 +73,8 @@ function ding_bv_page_build(&$page) {
       'agency_id' => $agency_id,
     ),
   );
-  $page['footer'][] = array(
+
+  $vars['page']['page_bottom'][] = array(
     '#prefix' => '<div class="ding-bv-tab">',
     '#suffix' => '</div>',
     '#markup' => l(t('Ask question'), $base . 'ask-question', $l_options),
