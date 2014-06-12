@@ -29,6 +29,7 @@ function ding_bv_menu() {
  * panels_everywhere thoroughly disables it, so we use this instead.
  */
 function ding_bv_preprocess_html(&$vars) {
+  global $user;
   if ($agency_id = variable_get('ting_agency', '')) {
     $agency_id = 'DK-' . $agency_id;
   }
@@ -57,11 +58,33 @@ function ding_bv_preprocess_html(&$vars) {
     }
   }
 
-  // JavaScript settings var.
+  // JavaScript settings var. Basic settings, id and mail.
   $settings = array(
     'agency_id' => $agency_id,
     'agency_mail' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
   );
+
+  // Check if a ding user is logged in and add in their name/zip/mail/phone if
+  // they are.
+  if (function_exists('ding_user_provider_profile') && $profile = ding_user_provider_profile($user)) {
+    $module = ding_provider_get_provider_module_name('user');
+    $mapping = array(
+      'name' => 'full_name',
+      'zip' => 'postal_code',
+      'mail' => 'mail',
+      'phone' => 'mobile_phone',
+    );
+
+    foreach ($mapping as $name => $field_suffix) {
+      $field_name = 'field_' . $module . '_' . $field_suffix;
+
+      $field_value = field_get_items('profile2', $profile, $field_name);
+      if (!empty($field_value[0]['value'])) {
+        $settings[$name] = $field_value[0]['value'];
+      }
+    }
+  }
+
   $settings_js = 'var ask_vopros = ' . json_encode($settings) . ';';
 
   // The host variable is only for debugging.
