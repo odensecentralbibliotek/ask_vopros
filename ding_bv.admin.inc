@@ -10,7 +10,8 @@
  */
 function ding_bv_settings($form, &$form_state) {
   // If ting is configured with an agency id, just use that.
-  if (empty(variable_get('ting_agency', ''))) {
+  $agency_id = variable_get('ting_agency', '');
+  if (empty($agency_id)) {
     $form['ding_bv_agency_id'] = array(
       '#type' => 'textfield',
       '#title' => t('Identification'),
