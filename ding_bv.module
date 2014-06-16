@@ -71,7 +71,6 @@ function ding_bv_preprocess_html(&$vars) {
     $mapping = array(
       'name' => 'full_name',
       'zip' => 'postal_code',
-      'mail' => 'mail',
       'phone' => 'mobile_phone',
     );
 
@@ -82,6 +81,13 @@ function ding_bv_preprocess_html(&$vars) {
       if (!empty($field_value[0]['value'])) {
         $settings[$name] = $field_value[0]['value'];
       }
+    }
+
+    // Seems that there's some trouble getting the mail address from the
+    // profile. It should've been copied to the mail of the Drupal user, so use
+    // that.
+    if (!empty($user->mail)) {
+      $settings['mail'] = $user->mail;
     }
   }
 
