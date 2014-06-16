@@ -2,3 +2,4 @@ name = Biblioteksvagten popup
 description = A popup for sending questions to Biblioteksvagten.
 package = "Ding!"
 core = 7.x
+configure = admin/config/services/ding_bv
