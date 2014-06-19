@@ -79,13 +79,6 @@ function ding_bv_preprocess_html(&$vars) {
   // The host variable is only for debugging.
   $base = 'http://' . variable_get('ding_bv_host', 'dev.biblioteksvagten.dk') . '/embed/';
 
-  $l_options = array(
-    'external' => TRUE,
-    'query' => array(
-      'agency_id' => $agency_id,
-    ),
-  );
-
   // Add the JavaScript before testing visibility. This allows for hiding the
   // tab, but still being able to add a flat link which the JS will then pick up
   // and popupify.
@@ -117,6 +110,13 @@ function ding_bv_preprocess_html(&$vars) {
       return;
     }
   }
+
+  $l_options = array(
+    'external' => TRUE,
+    'query' => array(
+      'agency_id' => $agency_id,
+    ),
+  );
 
   // Now add the tab.
   $vars['page']['page_bottom'][] = array(

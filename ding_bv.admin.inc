@@ -48,5 +48,28 @@ function ding_bv_settings($form, &$form_state) {
     '#description' => $description,
   );
 
+  if ($agency_id = variable_get('ting_agency', '')) {
+    $agency_id = 'DK-' . $agency_id;
+  }
+  else {
+    $agency_id = variable_get('ding_bv_agency_id', '');
+  }
+
+  if ($agency_id) {
+    $options = array(
+      'external' => TRUE,
+      'query' => array(
+        'agency_id' => $agency_id,
+        'mail' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
+      ),
+    );
+    $link = url($base = 'http://' . variable_get('ding_bv_host', 'dev.biblioteksvagten.dk') . '/embed/ask-question', $options);
+
+
+    $form['help'] = array(
+      '#markup' => t('If you do not want to use the tab, you can always create a simple link to !link which will then be shown in a popup.', array('!link' => $link)),
+    );
+  }
+
   return system_settings_form($form);
 }
