@@ -77,7 +77,7 @@ function ding_bv_preprocess_html(&$vars) {
   $settings_js = 'var ask_vopros = ' . json_encode($settings) . ';';
 
   // The host variable is only for debugging.
-  $base = 'http://' . variable_get('ding_bv_host', 'dev.biblioteksvagten.dk') . '/embed/';
+  $base = 'http://' . variable_get('ding_bv_host', 'adm.biblioteksvagten.dk') . '/embed/';
 
   // Add the JavaScript before testing visibility. This allows for hiding the
   // tab, but still being able to add a flat link which the JS will then pick up

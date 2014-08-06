@@ -63,7 +63,7 @@ function ding_bv_settings($form, &$form_state) {
         'mail' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
       ),
     );
-    $link = url($base = 'http://' . variable_get('ding_bv_host', 'dev.biblioteksvagten.dk') . '/embed/ask-question', $options);
+    $link = url($base = 'http://' . variable_get('ding_bv_host', 'adm.biblioteksvagten.dk') . '/embed/ask-question', $options);
 
 
     $form['help'] = array(
