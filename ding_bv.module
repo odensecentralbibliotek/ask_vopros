@@ -47,6 +47,11 @@ function ding_bv_preprocess_html(&$vars) {
     'agency_mail' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
   );
 
+  $answer_preference = variable_get('ding_bv_answer_preference', 'mail');
+  if ($answer_preference !== 'mail') {
+    $settings['answer_preference'] = $answer_preference;
+  }
+
   // Check if a ding user is logged in and add in their name/zip/mail/phone if
   // they are.
   if (function_exists('ding_user_provider_profile') && $profile = ding_user_provider_profile($user)) {

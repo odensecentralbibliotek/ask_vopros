@@ -28,6 +28,20 @@ function ding_bv_settings($form, &$form_state) {
   );
 
   $options = array(
+    'chat' => t('Chat'),
+    'mail' => t('E-mail'),
+    'sms' => t('SMS'),
+  );
+
+  $form['ding_bv_answer_preference'] = array(
+    '#type' => 'radios',
+    '#title' => t('Default answer method'),
+    '#options' => $options,
+    '#default_value' => variable_get('ding_bv_answer_preference', 'mail'),
+    '#description' => t('The preferred default answering method. Not all methods may be supported by the server, in which case it chooses its own default.'),
+  );
+
+  $options = array(
     'not on' => t('All pages except those listed'),
     'on' => t('Only the listed pages'),
   );
