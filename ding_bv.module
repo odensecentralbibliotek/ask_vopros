@@ -87,16 +87,33 @@ function ding_bv_preprocess_html(&$vars) {
   // Add the JavaScript before testing visibility. This allows for hiding the
   // tab, but still being able to add a flat link which the JS will then pick up
   // and popupify.
+
+  // We can't set the async attribute for an attached JS, so we build the script
+  // element by hand, in the same way drupal_get_js() does.
+  // Using async and defer is the currently recommend practice to avoid having
+  // the page hang on the script.
+  // @see https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/
+
+  $element = array(
+    '#tag' => 'script',
+    '#value' => '',
+    '#attributes' => array(
+      'type' => 'text/javascript',
+      'src' => $base . 'question_modal.js',
+      'defer' => 'defer',
+      'async' => 'async',
+    ),
+  );
   $vars['page']['page_bottom'][] = array(
     '#attached' => array(
       'js' => array(
-        $base . 'question_modal.js' => array('type' => 'external'),
         $settings_js => array('type' => 'inline'),
       ),
       'css' => array(
         drupal_get_path('module', 'ding_bv') . '/ding_bv.css',
       ),
     ),
+    '#markup' => theme('html_tag', array('element' => $element)),
   );
 
   // Check visibility settings.
