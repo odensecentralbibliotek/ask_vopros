@@ -83,39 +83,10 @@ function ask_vopros_preprocess_html(&$vars) {
 
   $base = rtrim(variable_get('ask_vopros_uri', 'http://adm.biblioteksvagten.dk'), '/') . '/embed/';
 
-  // Add the JavaScript before testing visibility. This allows for hiding the
-  // tab, but still being able to add a flat link which the JS will then pick up
-  // and popupify.
+  $visible = TRUE;
 
-  // We can't set the async attribute for an attached JS, so we build the script
-  // element by hand, in the same way drupal_get_js() does.
-  // Using async and defer is the currently recommend practice to avoid having
-  // the page hang on the script.
-  // @see https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/
-
-  $element = array(
-    '#tag' => 'script',
-    '#value' => '',
-    '#attributes' => array(
-      'type' => 'text/javascript',
-      'src' => $base . 'question_modal.js',
-      'defer' => 'defer',
-      'async' => 'async',
-    ),
-  );
-  $vars['page']['page_bottom'][] = array(
-    '#attached' => array(
-      'js' => array(
-        $settings_js => array('type' => 'inline'),
-      ),
-      'css' => array(
-        drupal_get_path('module', 'ask_vopros') . '/ask_vopros.css',
-      ),
-    ),
-    '#markup' => theme('html_tag', array('element' => $element)),
-  );
-
-  // Check visibility settings.
+  // Check visibility settings. We add the query argument to get
+  // question_modal.js to add the tab for us.
   $visibility_type = variable_get('ask_vopros_visibility_type', 'not on');
   $visibility_pages = variable_get('ask_vopros_visibility_pages', '');
   // If no pages are specified, show regardless of the type. This logic was
@@ -128,26 +99,34 @@ function ask_vopros_preprocess_html(&$vars) {
       $page_match = $page_match || drupal_match_path($_GET['q'], $visibility_pages);
     }
     if ($page_match xor ($visibility_type == 'on')) {
-      return;
+      $visible = FALSE;
     }
   }
 
-  $l_options = array(
-    'external' => TRUE,
-    'query' => array(
-      'agency_id' => $agency_id,
+  // We can't set the async attribute for an attached JS, so we build the script
+  // element by hand, in the same way drupal_get_js() does.
+  // Using async and defer is the currently recommend practice to avoid having
+  // the page hang on the script.
+  // @see https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/
+
+  $element = array(
+    '#tag' => 'script',
+    '#value' => '',
+    '#attributes' => array(
+      'type' => 'text/javascript',
+      'src' => $base . 'question_modal.js' . ($visible ? '?tab=true' : ''),
+      'defer' => 'defer',
+      'async' => 'async',
     ),
   );
 
-  // Now add the tab.
+  // Add the settings.
   $vars['page']['page_bottom'][] = array(
-    '#prefix' => '<div class="ask-vopros-tab">',
-    '#suffix' => '</div>',
-    '#markup' => l(t('Ask question'), $base . 'ask-question', $l_options),
     '#attached' => array(
-      'css' => array(
-        drupal_get_path('module', 'ask_vopros') . '/ask_vopros.css',
+      'js' => array(
+        $settings_js => array('type' => 'inline'),
       ),
     ),
+    '#markup' => theme('html_tag', array('element' => $element)),
   );
 }
