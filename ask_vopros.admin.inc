@@ -2,28 +2,28 @@
 
 /**
  * @file
- * Administrative forms and pages for ding_bv.
+ * Administrative forms and pages for ask_vopros.
  */
 
 /**
  * Form builder.
  */
-function ding_bv_settings($form, &$form_state) {
+function ask_vopros_settings($form, &$form_state) {
   // If ting is configured with an agency id, just use that.
   $agency_id = variable_get('ting_agency', '');
   if (empty($agency_id)) {
-    $form['ding_bv_agency_id'] = array(
+    $form['ask_vopros_agency_id'] = array(
       '#type' => 'textfield',
       '#title' => t('Identification'),
-      '#default_value' => variable_get('ding_bv_agency_id', ''),
+      '#default_value' => variable_get('ask_vopros_agency_id', ''),
       '#description' => t('Either a library code in the form of <em>DK-123456</em> or a custom string.'),
     );
   }
 
-  $form['ding_bv_agency_mail'] = array(
+  $form['ask_vopros_agency_mail'] = array(
     '#type' => 'textfield',
     '#title' => t('Local E-mail'),
-    '#default_value' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
+    '#default_value' => variable_get('ask_vopros_agency_mail', variable_get('site_mail', '')),
     '#description' => t('E-mail address which Biblioteksvagten can forward inquiries best answered locally to.'),
   );
 
@@ -33,11 +33,11 @@ function ding_bv_settings($form, &$form_state) {
     'sms' => t('SMS'),
   );
 
-  $form['ding_bv_answer_preference'] = array(
+  $form['ask_vopros_answer_preference'] = array(
     '#type' => 'radios',
     '#title' => t('Default answer method'),
     '#options' => $options,
-    '#default_value' => variable_get('ding_bv_answer_preference', 'mail'),
+    '#default_value' => variable_get('ask_vopros_answer_preference', 'mail'),
     '#description' => t('The preferred default answering method. Not all methods may be supported by the server, in which case it chooses its own default.'),
   );
 
@@ -46,19 +46,19 @@ function ding_bv_settings($form, &$form_state) {
     'on' => t('Only the listed pages'),
   );
 
-  $form['ding_bv_visibility_type'] = array(
+  $form['ask_vopros_visibility_type'] = array(
     '#type' => 'radios',
     '#title' => t('Show block on specific pages'),
     '#options' => $options,
-    '#default_value' => variable_get('ding_bv_visibility_type', 'not on'),
+    '#default_value' => variable_get('ask_vopros_visibility_type', 'not on'),
   );
 
   $description = t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>'));
 
-  $form['ding_bv_visibility_pages'] = array(
+  $form['ask_vopros_visibility_pages'] = array(
     '#type' => 'textarea',
     '#title' => '<span class="element-invisible">' . t('Pages') . '</span>',
-    '#default_value' => variable_get('ding_bv_visibility_pages', ''),
+    '#default_value' => variable_get('ask_vopros_visibility_pages', ''),
     '#description' => $description,
   );
 
@@ -66,7 +66,7 @@ function ding_bv_settings($form, &$form_state) {
     $agency_id = 'DK-' . $agency_id;
   }
   else {
-    $agency_id = variable_get('ding_bv_agency_id', '');
+    $agency_id = variable_get('ask_vopros_agency_id', '');
   }
 
   if ($agency_id) {
@@ -74,10 +74,10 @@ function ding_bv_settings($form, &$form_state) {
       'external' => TRUE,
       'query' => array(
         'agency_id' => $agency_id,
-        'mail' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
+        'mail' => variable_get('ask_vopros_agency_mail', variable_get('site_mail', '')),
       ),
     );
-    $link = url($base = 'http://' . variable_get('ding_bv_host', 'adm.biblioteksvagten.dk') . '/embed/ask-question', $options);
+    $link = url($base = 'http://' . variable_get('ask_vopros_host', 'adm.biblioteksvagten.dk') . '/embed/ask-question', $options);
 
 
     $form['help'] = array(

@@ -9,14 +9,14 @@
 /**
  * Implements hook_menu().
  */
-function ding_bv_menu() {
-  $items['admin/config/services/ding_bv'] = array(
+function ask_vopros_menu() {
+  $items['admin/config/services/ask_vopros'] = array(
     'title' => 'Ask Biblioteksvagten.dk',
     'description' => 'Configure the tab for sending user questions to Biblioteksvagten.dk.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('ding_bv_settings'),
+    'page arguments' => array('ask_vopros_settings'),
     'access arguments' => array('administer site configuration'),
-    'file' => 'ding_bv.admin.inc',
+    'file' => 'ask_vopros.admin.inc',
   );
 
   return $items;
@@ -28,13 +28,13 @@ function ding_bv_menu() {
  * This adds in our bottom tab. Using hook_page_build() is no good, as
  * panels_everywhere thoroughly disables it, so we use this instead.
  */
-function ding_bv_preprocess_html(&$vars) {
+function ask_vopros_preprocess_html(&$vars) {
   global $user;
   if ($agency_id = variable_get('ting_agency', '')) {
     $agency_id = 'DK-' . $agency_id;
   }
   else {
-    $agency_id = variable_get('ding_bv_agency_id', '');
+    $agency_id = variable_get('ask_vopros_agency_id', '');
   }
 
   if (!$agency_id) {
@@ -44,10 +44,10 @@ function ding_bv_preprocess_html(&$vars) {
   // JavaScript settings var. Basic settings, id and mail.
   $settings = array(
     'agency_id' => $agency_id,
-    'agency_mail' => variable_get('ding_bv_agency_mail', variable_get('site_mail', '')),
+    'agency_mail' => variable_get('ask_vopros_agency_mail', variable_get('site_mail', '')),
   );
 
-  $answer_preference = variable_get('ding_bv_answer_preference', 'mail');
+  $answer_preference = variable_get('ask_vopros_answer_preference', 'mail');
   if ($answer_preference !== 'mail') {
     $settings['answer_preference'] = $answer_preference;
   }
@@ -82,7 +82,7 @@ function ding_bv_preprocess_html(&$vars) {
   $settings_js = 'var ask_vopros = ' . json_encode($settings) . ';';
 
   // The host variable is only for debugging.
-  $base = 'http://' . variable_get('ding_bv_host', 'adm.biblioteksvagten.dk') . '/embed/';
+  $base = 'http://' . variable_get('ask_vopros_host', 'adm.biblioteksvagten.dk') . '/embed/';
 
   // Add the JavaScript before testing visibility. This allows for hiding the
   // tab, but still being able to add a flat link which the JS will then pick up
@@ -110,15 +110,15 @@ function ding_bv_preprocess_html(&$vars) {
         $settings_js => array('type' => 'inline'),
       ),
       'css' => array(
-        drupal_get_path('module', 'ding_bv') . '/ding_bv.css',
+        drupal_get_path('module', 'ask_vopros') . '/ask_vopros.css',
       ),
     ),
     '#markup' => theme('html_tag', array('element' => $element)),
   );
 
   // Check visibility settings.
-  $visibility_type = variable_get('ding_bv_visibility_type', 'not on');
-  $visibility_pages = variable_get('ding_bv_visibility_pages', '');
+  $visibility_type = variable_get('ask_vopros_visibility_type', 'not on');
+  $visibility_pages = variable_get('ask_vopros_visibility_pages', '');
   // If no pages are specified, show regardless of the type. This logic was
   // lifted from block_block_list_alter(). Look there for comments.
   if ($visibility_pages) {
@@ -147,7 +147,7 @@ function ding_bv_preprocess_html(&$vars) {
     '#markup' => l(t('Ask question'), $base . 'ask-question', $l_options),
     '#attached' => array(
       'css' => array(
-        drupal_get_path('module', 'ding_bv') . '/ding_bv.css',
+        drupal_get_path('module', 'ask_vopros') . '/ask_vopros.css',
       ),
     ),
   );
