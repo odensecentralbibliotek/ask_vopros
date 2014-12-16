@@ -11,8 +11,8 @@
  */
 function ask_vopros_menu() {
   $items['admin/config/services/ask_vopros'] = array(
-    'title' => 'Ask Biblioteksvagten.dk',
-    'description' => 'Configure the tab for sending user questions to Biblioteksvagten.dk.',
+    'title' => 'Ask Vopros',
+    'description' => 'Configure the tab for sending user questions to a Vopros site.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ask_vopros_settings'),
     'access arguments' => array('administer site configuration'),
@@ -81,8 +81,7 @@ function ask_vopros_preprocess_html(&$vars) {
 
   $settings_js = 'var ask_vopros = ' . json_encode($settings) . ';';
 
-  // The host variable is only for debugging.
-  $base = 'http://' . variable_get('ask_vopros_host', 'adm.biblioteksvagten.dk') . '/embed/';
+  $base = rtrim(variable_get('ask_vopros_uri', 'http://adm.biblioteksvagten.dk'), '/') . '/embed/';
 
   // Add the JavaScript before testing visibility. This allows for hiding the
   // tab, but still being able to add a flat link which the JS will then pick up
@@ -142,7 +141,7 @@ function ask_vopros_preprocess_html(&$vars) {
 
   // Now add the tab.
   $vars['page']['page_bottom'][] = array(
-    '#prefix' => '<div class="ding-bv-tab">',
+    '#prefix' => '<div class="ask-vopros-tab">',
     '#suffix' => '</div>',
     '#markup' => l(t('Ask question'), $base . 'ask-question', $l_options),
     '#attached' => array(

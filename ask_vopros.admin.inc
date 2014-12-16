@@ -20,6 +20,13 @@ function ask_vopros_settings($form, &$form_state) {
     );
   }
 
+  $form['ask_vopros_uri'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Vopros URL'),
+    '#default_value' => variable_get('ask_vopros_uri', 'http://adm.biblioteksvagten.dk'),
+    '#description' => t('The address of the Vopros site to send the question to.'),
+  );
+
   $form['ask_vopros_agency_mail'] = array(
     '#type' => 'textfield',
     '#title' => t('Local E-mail'),
