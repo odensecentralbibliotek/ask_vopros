@@ -83,12 +83,13 @@ function ask_vopros_preprocess_html(&$vars) {
 
   $base = rtrim(variable_get('ask_vopros_uri', 'http://adm.biblioteksvagten.dk'), '/') . '/embed/';
 
-  $visible = TRUE;
-
   // Check visibility settings. We add the query argument to get
   // question_modal.js to add the tab for us.
   $visibility_type = variable_get('ask_vopros_visibility_type', 'not on');
   $visibility_pages = variable_get('ask_vopros_visibility_pages', '');
+  // The default visibility in case $visibility_pages is empty.
+  $visible = $visibility_type == 'not on';
+
   // If no pages are specified, show regardless of the type. This logic was
   // lifted from block_block_list_alter(). Look there for comments.
   if ($visibility_pages) {
