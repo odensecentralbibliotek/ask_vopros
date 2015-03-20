@@ -23,7 +23,7 @@ function ask_vopros_settings($form, &$form_state) {
   $form['ask_vopros_uri'] = array(
     '#type' => 'textfield',
     '#title' => t('Vopros URL'),
-    '#default_value' => variable_get('ask_vopros_uri', 'http://adm.biblioteksvagten.dk'),
+    '#default_value' => variable_get('ask_vopros_uri', 'https://adm.biblioteksvagten.dk'),
     '#description' => t('The address of the Vopros site to send the question to.'),
   );
 
@@ -81,11 +81,10 @@ function ask_vopros_settings($form, &$form_state) {
       'external' => TRUE,
       'query' => array(
         'agency_id' => $agency_id,
-        'mail' => variable_get('ask_vopros_agency_mail', variable_get('site_mail', '')),
+        'agency_mail' => variable_get('ask_vopros_agency_mail', variable_get('site_mail', '')),
       ),
     );
-    $link = url($base = 'http://' . variable_get('ask_vopros_host', 'adm.biblioteksvagten.dk') . '/embed/ask-question', $options);
-
+    $link = url(rtrim(variable_get('ask_vopros_uri', 'https://adm.biblioteksvagten.dk'), '/') . '/embed/ask-question', $options);
 
     $form['help'] = array(
       '#markup' => t('If you do not want to use the tab, you can always create a simple link to !link which will then be shown in a popup.', array('!link' => $link)),
@@ -93,4 +92,18 @@ function ask_vopros_settings($form, &$form_state) {
   }
 
   return system_settings_form($form);
+}
+
+/**
+ * Validation handler for settings form.
+ */
+function ask_vopros_settings_validate($form, &$form_state) {
+  $url = $form_state['values']['ask_vopros_uri'];
+  $parsed = parse_url($url);
+  if (!$parsed || empty($parsed['host']) || empty($parsed['scheme'])) {
+    form_error($form['ask_vopros_uri'], t('Invalid URL.'));
+  }
+  if ($parsed['scheme'] != 'https') {
+    form_error($form['ask_vopros_uri'], t('Service URL must be a HTTPS URL in order to protect the privacy of the users'));
+  }
 }
