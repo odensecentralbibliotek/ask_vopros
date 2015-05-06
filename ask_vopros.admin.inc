@@ -10,7 +10,7 @@
  */
 function ask_vopros_settings($form, &$form_state) {
   // If ting is configured with an agency id, just use that.
-  $agency_id = variable_get('ting_agency', '');
+  $agency_id = _ask_vopros_ting_agency_id();
   if (empty($agency_id)) {
     $form['ask_vopros_agency_id'] = array(
       '#type' => 'textfield',
@@ -68,13 +68,6 @@ function ask_vopros_settings($form, &$form_state) {
     '#default_value' => variable_get('ask_vopros_visibility_pages', ''),
     '#description' => $description,
   );
-
-  if ($agency_id = variable_get('ting_agency', '')) {
-    $agency_id = 'DK-' . $agency_id;
-  }
-  else {
-    $agency_id = variable_get('ask_vopros_agency_id', '');
-  }
 
   if ($agency_id) {
     $options = array(

@@ -30,12 +30,7 @@ function ask_vopros_menu() {
  */
 function ask_vopros_preprocess_html(&$vars) {
   global $user;
-  if ($agency_id = variable_get('ting_agency', '')) {
-    $agency_id = 'DK-' . $agency_id;
-  }
-  else {
-    $agency_id = variable_get('ask_vopros_agency_id', '');
-  }
+  $agency_id = variable_get('ask_vopros_agency_id', _ask_vopros_ting_agency_id());
 
   if (!$agency_id) {
     return;
@@ -130,4 +125,21 @@ function ask_vopros_preprocess_html(&$vars) {
     ),
     '#markup' => theme('html_tag', array('element' => $element)),
   );
+}
+
+/**
+ * Glean agency_id from ting.module.
+ *
+ * Checks if ting.module has been configured with an agency, and use that to
+ * create ours.
+ *
+ * @return string|null
+ *   Agency id or null if not found.
+ */
+function _ask_vopros_ting_agency_id() {
+  if ($agency_id = variable_get('ting_agency', '')) {
+    return 'DK-' . $agency_id;
+  }
+
+  return NULL;
 }
