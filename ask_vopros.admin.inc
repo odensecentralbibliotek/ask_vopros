@@ -19,6 +19,14 @@ function ask_vopros_settings($form, &$form_state) {
       '#description' => t('Either a library code in the form of <em>DK-123456</em> or a custom string.'),
     );
   }
+  else {
+    $form['ask_vopros_agency_id'] = array(
+      '#type' => 'item',
+      '#title' => t('Identification'),
+      '#markup' => check_plain($agency_id),
+      '#description' => t('This can be overridden with <em>drush vset ask_vopros_agency_id [new value]</em>.'),
+    );
+  }
 
   $form['ask_vopros_uri'] = array(
     '#type' => 'textfield',
