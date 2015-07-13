@@ -29,6 +29,7 @@ function ask_vopros_menu() {
  * panels_everywhere thoroughly disables it, so we use this instead.
  */
 function ask_vopros_preprocess_html(&$vars) {
+  drupal_add_css(drupal_get_path('module', 'ask_vopros') . '/css/fynbib.css');
   global $user;
   $agency_id = variable_get('ask_vopros_agency_id', _ask_vopros_ting_agency_id());
 
@@ -50,13 +51,18 @@ function ask_vopros_preprocess_html(&$vars) {
   // Check if a ding user is logged in and add in their name/zip/mail/phone if
   // they are.
   if (function_exists('ding_user_provider_profile') && $profile = ding_user_provider_profile($user)) {
-    $module = ding_provider_get_provider_module_name('user');
+    /*
+     * fynbib adaption.
+     */
+    $module = 'alma';
     $mapping = array(
-      'name' => 'full_name',
-      'zip' => 'postal_code',
       'phone' => 'mobile_phone',
     );
-
+    $settings['name'] = isset($user->data['display_name']) ? $user->data['display_name'] : $user->name;
+    $settings['zip'] = isset($user->data['address']['postal_code']) ? $user->data['address']['postal_code'] : null;
+    /*
+     * 
+     */
     foreach ($mapping as $name => $field_suffix) {
       $field_name = 'field_' . $module . '_' . $field_suffix;
 
