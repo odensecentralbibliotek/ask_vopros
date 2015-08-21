@@ -23,7 +23,7 @@ function ask_vopros_settings($form, &$form_state) {
     $form['ask_vopros_agency_id'] = array(
       '#type' => 'item',
       '#title' => t('Identification'),
-      '#markup' => check_plain($agency_id),
+      '#markup' => check_plain(variable_get('ask_vopros_agency_id', _ask_vopros_ting_agency_id())),
       '#description' => t('This can be overridden with <em>drush vset ask_vopros_agency_id [new value]</em>.'),
     );
   }
