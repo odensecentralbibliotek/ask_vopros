@@ -42,6 +42,13 @@ function ask_vopros_settings($form, &$form_state) {
     '#description' => t('E-mail address which Biblioteksvagten can forward inquiries best answered locally to.'),
   );
 
+  $form['ask_vopros_right'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Override right margin'),
+    '#default_value' => variable_get('ask_vopros_right', ''),
+    '#description' => t('Right margin of tab, in <number><units> format or a simple 0. Units supported: <em>%</em> (percent) <em>px</em> (pixels) <em>em</em> (font-size) <em>rem</em> (root element font-size). Leave empty for default.'),
+  );
+
   $options = array(
     'chat' => t('Chat'),
     'mail' => t('E-mail'),
@@ -106,5 +113,9 @@ function ask_vopros_settings_validate($form, &$form_state) {
   }
   if ($parsed['scheme'] != 'https') {
     form_error($form['ask_vopros_uri'], t('Service URL must be a HTTPS URL in order to protect the privacy of the users'));
+  }
+
+  if (!preg_match('/^(|0|-?\d+(%|px|em|rem))$/', trim($form_state['values']['ask_vopros_right']))) {
+    form_error($form['ask_vopros_right'], t('Invalid length'));
   }
 }
