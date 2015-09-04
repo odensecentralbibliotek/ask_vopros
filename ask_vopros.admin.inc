@@ -23,7 +23,7 @@ function ask_vopros_settings($form, &$form_state) {
     $form['ask_vopros_agency_id'] = array(
       '#type' => 'item',
       '#title' => t('Identification'),
-      '#markup' => check_plain($agency_id),
+      '#markup' => check_plain(variable_get('ask_vopros_agency_id', _ask_vopros_ting_agency_id())),
       '#description' => t('This can be overridden with <em>drush vset ask_vopros_agency_id [new value]</em>.'),
     );
   }
@@ -40,6 +40,13 @@ function ask_vopros_settings($form, &$form_state) {
     '#title' => t('Local E-mail'),
     '#default_value' => variable_get('ask_vopros_agency_mail', variable_get('site_mail', '')),
     '#description' => t('E-mail address which Biblioteksvagten can forward inquiries best answered locally to.'),
+  );
+
+  $form['ask_vopros_right'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Override right margin'),
+    '#default_value' => variable_get('ask_vopros_right', ''),
+    '#description' => t('Right margin of tab, in <number><units> format or a simple 0. Units supported: <em>%</em> (percent) <em>px</em> (pixels) <em>em</em> (font-size) <em>rem</em> (root element font-size). Leave empty for default.'),
   );
 
   $options = array(
@@ -106,5 +113,9 @@ function ask_vopros_settings_validate($form, &$form_state) {
   }
   if ($parsed['scheme'] != 'https') {
     form_error($form['ask_vopros_uri'], t('Service URL must be a HTTPS URL in order to protect the privacy of the users'));
+  }
+
+  if (!preg_match('/^(|0|-?\d+(%|px|em|rem))$/', trim($form_state['values']['ask_vopros_right']))) {
+    form_error($form['ask_vopros_right'], t('Invalid length'));
   }
 }

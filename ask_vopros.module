@@ -123,7 +123,7 @@ function ask_vopros_preprocess_html(&$vars) {
   );
 
   // Add the settings.
-  $vars['page']['page_bottom'][] = array(
+  $attachment = array(
     '#attached' => array(
       'js' => array(
         $settings_js => array('type' => 'inline'),
@@ -131,6 +131,16 @@ function ask_vopros_preprocess_html(&$vars) {
     ),
     '#markup' => theme('html_tag', array('element' => $element)),
   );
+
+  $right = variable_get('ask_vopros_right', '');
+  if (!empty($right) || $right === '0') {
+    $attachment['#attached']['css'] = array(
+      'body .ask-vopros-tab {right: ' . $right . '}' => array('type' => 'inline'),
+    );
+  }
+
+  $vars['page']['page_bottom'][] = $attachment;
+
 }
 
 /**

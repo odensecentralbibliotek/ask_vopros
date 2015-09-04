@@ -14,4 +14,5 @@ function ask_vopros_uninstall() {
   variable_del('ask_vopros_visibility_type');
   variable_del('ask_vopros_visibility_pages');
   variable_del('ask_vopros_uri');
+  variable_del('ask_vopros_right');
 }
